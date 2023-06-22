@@ -38,9 +38,10 @@
             // 
             pictureBox.Location = new Point(-3, -2);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(803, 281);
+            pictureBox.Size = new Size(803, 449);
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
+            pictureBox.DragDrop += pictureBox_DragDrop;
             // 
             // textBox1
             // 
@@ -52,6 +53,7 @@
             // 
             // Form1
             // 
+            AllowDrop = true;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
@@ -61,6 +63,7 @@
             Name = "Form1";
             Text = "Winimg 0.1";
             Load += Form1_Load;
+            DragDrop += Form1_DragDrop;
             KeyPress += Form1_KeyPress;
             PreviewKeyDown += Form1_PreviewKeyDown;
             Resize += Form1_Resize;

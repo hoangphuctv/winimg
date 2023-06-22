@@ -1,4 +1,6 @@
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Winimg
 {
@@ -18,22 +20,36 @@ namespace Winimg
             this.imgIndex = 0;
             this.textBox1.Visible = false;
             this.textBox1.ReadOnly = true;
+            pictureBox.LoadCompleted += PictureBox_LoadCompleted;
             string[] args = Environment.GetCommandLineArgs();
 
-            imgPath = "";
+            bool foundImageArg = false;
             foreach (String f in args)
             {
                 this.log("args[] = " + f);
                 if (this.isImg(f))
                 {
+                    foundImageArg = true;
                     imgPath = f;
                     break;
                 }
             }
+
+            if (!foundImageArg )
+            {
+                pictureBox.Image = Properties.Resources.ImageDefault;
+                pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            }
+
             this.log("isDir(imgPath) = " + imgPath);
             this.log("isDir(imgPath) = " + isDir(imgPath));
+            this.initPath(imgPath);
+        }
 
-            switch (isDir(imgPath))
+
+        private void initPath(String xpath)
+        {
+            switch (isDir(xpath))
             {
                 case 0:
                     if (this.isImg(imgPath))
@@ -79,10 +95,13 @@ namespace Winimg
                 imgPath = apath;
             }
             pictureBox.ImageLocation = apath;
-            pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
             pictureBox.TabIndex = 0;
             pictureBox.Left = 0;
             pictureBox.Top = 0;
+        }
+
+        private void PictureBox_LoadCompleted(Object sender, AsyncCompletedEventArgs e)
+        {
             this.initSize();
         }
         private void Form1_Resize(object sender, EventArgs e)
@@ -92,7 +111,13 @@ namespace Winimg
 
         private void initSize()
         {
-
+            if (this.pictureBox.Image != null && this.pictureBox.Image.Size.Width > this.Size.Width)
+            {
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            }else
+            {
+                pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            }
             pictureBox.Size = new Size(this.Size.Width, this.Size.Height);
         }
 
@@ -168,6 +193,26 @@ namespace Winimg
                 return;
             }
             this.textBox1.Text += line + "\r\n";
+        }
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string file in files)
+            {
+                this.log("drop file: " + file);
+            }
+        }
+
+        private void pictureBox_DragDrop(object sender, DragEventArgs e)
+        {
+
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string file in files)
+            {
+                this.log("drop file: " + file);
+            }
         }
     }
 }
