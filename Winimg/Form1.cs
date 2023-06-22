@@ -35,10 +35,9 @@ namespace Winimg
                 }
             }
 
-            if (!foundImageArg )
+            if (!foundImageArg)
             {
-                pictureBox.Image = Properties.Resources.ImageDefault;
-                pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+                imgPath = @"C:\Windows\Web\Wallpaper\ThemeC";
             }
 
             this.log("isDir(imgPath) = " + imgPath);
@@ -156,6 +155,14 @@ namespace Winimg
             return ImageExtensions.Contains(Path.GetExtension(f).ToUpperInvariant());
         }
 
+        private void rotateImage() {
+            if (pictureBox.Image == null) return;
+            Image img = pictureBox.Image;
+            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            pictureBox.Image = img;
+            // img.Save(output, System.Drawing.Imaging.ImageFormat.Jpeg);
+        }
+
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
         }
@@ -164,6 +171,9 @@ namespace Winimg
         {
             switch (e.KeyCode)
             {
+                case Keys.R:
+                    this.rotateImage();
+                    break;
                 case Keys.Q:
                     Application.Exit();
                     break;
