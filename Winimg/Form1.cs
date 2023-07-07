@@ -110,10 +110,13 @@ namespace Winimg
 
         private void initSize()
         {
-            if (this.pictureBox.Image != null && this.pictureBox.Image.Size.Width > this.Size.Width)
+            if (this.pictureBox.Image != null && (
+                this.pictureBox.Image.Size.Width > this.Size.Width || this.pictureBox.Image.Size.Height > this.Size.Height
+                ))
             {
                 pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            }else
+            }
+            else
             {
                 pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
             }
