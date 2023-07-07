@@ -1,4 +1,6 @@
+using Microsoft.Win32;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -75,6 +77,22 @@ namespace Winimg
             if (this.files != null && this.files[this.imgIndex] != null)
             {
                 this.setImgePath(this.files[this.imgIndex]);
+            }
+        }
+
+        private void saveCurImage()
+        {
+            if (pictureBox != null && pictureBox.Image != null)
+            {
+                string namestring = pictureBox.ImageLocation.ToLower();
+                if (namestring.Substring(namestring.Length - 3) == "png")
+                {
+                    pictureBox.Image.Save(pictureBox.ImageLocation, ImageFormat.Png);
+                }
+                else
+                {
+                    pictureBox.Image.Save(pictureBox.ImageLocation, ImageFormat.Jpeg);
+                }
             }
         }
         private void setImgePath(String apath)
@@ -158,7 +176,8 @@ namespace Winimg
             return ImageExtensions.Contains(Path.GetExtension(f).ToUpperInvariant());
         }
 
-        private void rotateImage() {
+        private void rotateImage()
+        {
             if (pictureBox.Image == null) return;
             Image img = pictureBox.Image;
             img.RotateFlip(RotateFlipType.Rotate90FlipNone);
@@ -179,6 +198,9 @@ namespace Winimg
                     break;
                 case Keys.Q:
                     Application.Exit();
+                    break;
+                case Keys.S:
+                    saveCurImage();
                     break;
                 case Keys.Right:
                     this.imgIndex++;
@@ -227,5 +249,6 @@ namespace Winimg
                 this.log("drop file: " + file);
             }
         }
+
     }
 }

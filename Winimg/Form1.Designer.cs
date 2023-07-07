@@ -36,6 +36,7 @@
             // 
             // pictureBox
             // 
+            pictureBox.BackColor = SystemColors.AppWorkspace;
             pictureBox.Location = new Point(-3, -2);
             pictureBox.Name = "pictureBox";
             pictureBox.Size = new Size(803, 449);
